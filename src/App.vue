@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+  <div class="body" :style="{ background: `url(${appStore.appBg})` }">
     <div class="wrapper">
       <MusicLeft></MusicLeft>
       <MusicRight></MusicRight>
@@ -10,6 +10,9 @@
 <script setup lang="ts">
 import MusicLeft from './components/MusicLeft.vue';
 import MusicRight from './components/MusicRight.vue';
+import useAppStore from './store/app';
+
+const appStore = useAppStore();
 </script>
 
 <style scoped lang="less">
