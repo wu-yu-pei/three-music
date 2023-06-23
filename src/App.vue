@@ -1,30 +1,31 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="body">
+    <div class="wrapper">
+      <MusicLeft></MusicLeft>
+      <MusicRight></MusicRight>
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script setup lang="ts">
+import MusicLeft from './components/MusicLeft.vue';
+import MusicRight from './components/MusicRight.vue';
+</script>
+
+<style scoped lang="less">
+.body {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: url('/src/assets/bg.jpg');
+  background-size: cover;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(20px) drop-shadow(4px 4px 10px blue);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 </style>
