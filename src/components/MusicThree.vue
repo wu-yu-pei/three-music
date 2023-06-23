@@ -162,6 +162,6 @@ audio {
   position: absolute;
   width: 500px;
   height: 100px;
-  z-index: 999;
+  z-index: 0;
 }
 </style>

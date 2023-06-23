@@ -4,6 +4,10 @@ const useAppStore = defineStore('app', {
   state: () => {
     return {
       appBg: '',
+
+      musicList: [],
+
+      currentMusic: {},
     };
   },
   actions: {},

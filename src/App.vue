@@ -1,5 +1,5 @@
 <template>
-  <div class="body" :style="{ background: `url(${appStore.appBg})` }">
+  <div class="body" :style="{ backgroundImage: `url(${appStore.appBg})` }">
     <div class="wrapper">
       <MusicLeft></MusicLeft>
       <MusicRight></MusicRight>
