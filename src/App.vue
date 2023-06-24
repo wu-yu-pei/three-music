@@ -1,5 +1,5 @@
 <template>
-  <div class="body" :style="{ backgroundImage: `url(${appStore.appBg})` }">
+  <div class="body" :style="{ backgroundImage: `url(${appStore.currentMusicInfo.al && appStore.currentMusicInfo.al.picUrl})` }">
     <div class="wrapper">
       <MusicLeft></MusicLeft>
       <MusicRight></MusicRight>
@@ -22,6 +22,7 @@ const appStore = useAppStore();
   height: 100vh;
   background: url('/src/assets/bg.jpg');
   background-size: cover;
+  transition: background-image linear 0.4s;
 }
 
 .wrapper {

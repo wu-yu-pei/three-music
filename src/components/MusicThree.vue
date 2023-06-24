@@ -1,23 +1,56 @@
 <template>
   <div class="music-three">
-    <audio src="/src/assets/赤伶-HITA.128.mp3" controls></audio>
+    <audio ref="audioRef" crossOrigin="anonymous" :src="currentMusicInfo && currentMusicInfo.songUrl" controls></audio>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import useAppStore from '../store/app';
+import { storeToRefs } from 'pinia';
+
+const appStore = useAppStore();
+const { currentMusicInfo, audioRef, isPlaying } = storeToRefs(appStore);
+
+watch(
+  () => appStore.isPlaying,
+  (nVal, _) => {
+    console.log(nVal);
+
+    if (nVal) {
+      audioRef.value?.play();
+    } else {
+      audioRef.value?.pause();
+    }
+  }
+);
 
 onMounted(() => {
   const containerEl = document.querySelector('.music-three')!;
+  const audioEl = document.querySelector('audio')!;
+
+  // 音频
+  var dataArray: any = new Array(64).fill(10);
+  var analyer: any;
+
+  audioEl.addEventListener('play', () => {
+    const audCtx = new AudioContext();
+    const audSource = audCtx.createMediaElementSource(audioEl);
+    analyer = audCtx.createAnalyser();
+    analyer.fftSize = 64;
+    dataArray = new Uint8Array(analyer.frequencyBinCount);
+    audSource.connect(analyer);
+    analyer.connect(audCtx.destination);
+  });
 
   // 场景
   const scene = new THREE.Scene();
 
   // 相机
   const camera = new THREE.PerspectiveCamera(60, containerEl.clientWidth / containerEl.clientHeight, 0.1, 3000);
-  camera.position.set(0, 0, 200);
+  camera.position.set(0, 0, 800);
 
   // 渲染器
   const renderer = new THREE.WebGLRenderer({
@@ -35,27 +68,6 @@ onMounted(() => {
   // 坐标系
   const axesHelper = new THREE.AxesHelper(containerEl.clientWidth / 2);
   scene.add(axesHelper);
-
-  // 音频
-  var dataArray: any = new Array(64).fill(10);
-  var analyer: any;
-  var audEl = document.querySelector('audio')!;
-  var isPlaying = false;
-
-  audEl.addEventListener('play', () => {
-    isPlaying = true;
-    const audCtx = new AudioContext();
-    const audSource = audCtx.createMediaElementSource(audEl);
-    analyer = audCtx.createAnalyser();
-    analyer.fftSize = 64;
-    dataArray = new Uint8Array(analyer.frequencyBinCount);
-    audSource.connect(analyer);
-    analyer.connect(audCtx.destination);
-  });
-
-  audEl.addEventListener('pause', () => {
-    isPlaying = false;
-  });
 
   const cubes: any[] = [];
   const cubeWidth = 5;
@@ -92,7 +104,7 @@ onMounted(() => {
   }
 
   function animate() {
-    if (analyer && isPlaying) {
+    if (analyer && isPlaying.value) {
       analyer.getByteFrequencyData(dataArray);
       updateCube();
     }
@@ -156,12 +168,11 @@ function getRandomColor() {
 .music-three {
   width: 100%;
   height: 30%;
-  border-top: 1px solid red;
 }
 audio {
   position: absolute;
   width: 500px;
   height: 100px;
-  z-index: 0;
+  display: none;
 }
 </style>
