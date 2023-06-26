@@ -3,10 +3,27 @@
     <div class="music-left-title">{{ appStore.currentMusicInfo.name }}</div>
     <div class="music-left-body">
       <template v-for="(item, index) in lyric" :key="index">
-        <div class="music-left-body-lyric">{{ item.lyric }}</div>
+        <div class="music-left-body-lyric" :style="{ marginTop: index == 0 ? '200px' : '20px', marginBottom: index == lyric.length - 1 ? '200px' : '20px' }">
+          {{ item.lyric }}
+        </div>
       </template>
     </div>
-    <div class="music-left-control"></div>
+    <div class="music-left-control">
+      <div class="music-left-control-pre">
+        <span class="i-mdi-skip-previous"></span>
+      </div>
+      <div class="music-left-control-icon" @click="handleIconClick">
+        <template v-if="appStore.isPlaying">
+          <span class="i-mdi-pause"></span>
+        </template>
+        <template v-else>
+          <span class="i-mdi-step-forward"></span>
+        </template>
+      </div>
+      <div class="music-left-control-next">
+        <span class="i-mdi-skip-next"></span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -40,6 +57,10 @@ function handleLyric(lyric: string) {
 const lyric = computed(() => {
   return handleLyric(currentMusicLyric.value);
 });
+
+function handleIconClick() {
+  appStore.isPlaying = !appStore.isPlaying;
+}
 </script>
 
 <style scoped lang="less">
@@ -64,7 +85,28 @@ const lyric = computed(() => {
       text-align: center;
     }
   }
-  &-contorl {
+  &-control {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    > div {
+      span {
+        display: block;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+    }
+    &-pre {
+    }
+    &-icon {
+      span {
+        width: 50px !important;
+        height: 50px !important;
+      }
+    }
+    &-next {
+    }
   }
 }
 </style>

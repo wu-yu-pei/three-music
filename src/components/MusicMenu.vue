@@ -75,6 +75,8 @@ function getSongLyric(id: number) {
   fetch(`http://localhost:3000/lyric?id=${id}`)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
+
       appStore.currentMusicLyric = data.lrc.lyric;
     });
 }

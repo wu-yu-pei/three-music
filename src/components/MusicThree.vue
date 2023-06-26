@@ -49,8 +49,8 @@ onMounted(() => {
   const scene = new THREE.Scene();
 
   // 相机
-  const camera = new THREE.PerspectiveCamera(60, containerEl.clientWidth / containerEl.clientHeight, 0.1, 3000);
-  camera.position.set(0, 0, 800);
+  const camera = new THREE.PerspectiveCamera(75, containerEl.clientWidth / containerEl.clientHeight, 0.1, 3000);
+  camera.position.set(0, 0, 500);
 
   // 渲染器
   const renderer = new THREE.WebGLRenderer({
@@ -71,9 +71,9 @@ onMounted(() => {
 
   const cubes: any[] = [];
   const cubeWidth = 5;
-  const cubeDepth = 10;
+  const cubeDepth = 5;
   const cubeY = 0;
-  const cuveZ = containerEl.clientWidth / 4;
+  const cuveZ = containerEl.clientWidth / 6;
   const gap = 15;
   const count = dataArray.length;
 
@@ -102,13 +102,11 @@ onMounted(() => {
       cubes[i].setHeight(dataArray[i - count]);
     }
   }
-
   function animate() {
     if (analyer && isPlaying.value) {
       analyer.getByteFrequencyData(dataArray);
       updateCube();
     }
-
     controls.update();
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
