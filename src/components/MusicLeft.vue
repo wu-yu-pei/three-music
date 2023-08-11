@@ -35,7 +35,7 @@ import { storeToRefs } from 'pinia';
 import useAppStore, { AppState } from '../store/app';
 import { computed, ComputedRef, ref } from 'vue';
 const appStore: AppState = useAppStore();
-const { currentMusicLyric, audioRef, currentTime, currentMusicInfo } = storeToRefs(appStore);
+const { currentMusicLyric, audioRef, currentTime, currentMusicInfo } = storeToRefs(appStore as any);
 import { useMouseInElement } from '@vueuse/core';
 let bodyRef = ref<HTMLElement>();
 function handleLyric(lyric: string) {

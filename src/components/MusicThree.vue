@@ -12,7 +12,7 @@ import useAppStore, { AppState } from '../store/app';
 import { storeToRefs } from 'pinia';
 
 const appStore: AppState = useAppStore();
-const { currentMusicInfo, audioRef, isPlaying } = storeToRefs(appStore);
+const { currentMusicInfo, audioRef, isPlaying } = storeToRefs(appStore as any);
 
 watch(
   () => appStore.isPlaying,
