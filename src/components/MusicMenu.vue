@@ -4,6 +4,7 @@
       <div class="music-menu-item-index"></div>
       <div class="music-menu-item-bg">图片</div>
       <div class="music-menu-item-name">歌曲名称</div>
+      <div class="music-menu-item-name icon i-mdi-magnify" @click="search"></div>
     </div>
     <div class="music-menu-item" :class="{ active: appStore.currentMusicInfo.id === item.id && appStore.isPlaying }" v-for="(item, index) in list.concat(list)" :key="index">
       <div class="music-menu-item-index">{{ index + 1 }}</div>
@@ -34,12 +35,13 @@ const list = ref<any[]>([]);
 const appStore = useAppStore();
 
 //  获取歌曲列表数据
-fetch('http://localhost:3000/playlist/detail?id=49242031')
+fetch('http://8.141.63.127:3000/playlist/detail?id=49242031')
   .then((response) => response.json())
   .then((data) => {
     list.value = data.playlist.tracks;
     appStore.currentMusicInfo = list.value[0];
     getSongUrl(list.value[0].id);
+    getSongLyric(list.value[0].id);
   });
 
 // 歌曲点击
@@ -63,7 +65,7 @@ function handleMusicItemClick(item: any) {
 
 // 获取歌曲播放url
 function getSongUrl(id: number) {
-  fetch(`http://localhost:3000/song/url?id=${id}`)
+  fetch(`http://8.141.63.127:3000/song/url?id=${id}`)
     .then((response) => response.json())
     .then((data) => {
       appStore.currentMusicInfo.songUrl = data.data[0].url;
@@ -72,13 +74,17 @@ function getSongUrl(id: number) {
 
 // 获取歌曲播放url
 function getSongLyric(id: number) {
-  fetch(`http://localhost:3000/lyric?id=${id}`)
+  fetch(`http://8.141.63.127:3000/lyric?id=${id}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
 
       appStore.currentMusicLyric = data.lrc.lyric;
     });
+}
+
+function search() {
+  console.log('search');
 }
 </script>
 
@@ -98,6 +104,10 @@ function getSongLyric(id: number) {
     margin-bottom: 10px;
     height: 50px;
     cursor: pointer;
+    .icon {
+      width: 25px;
+      height: 25px;
+    }
     &-title {
       background-color: transparent;
       cursor: auto !important;

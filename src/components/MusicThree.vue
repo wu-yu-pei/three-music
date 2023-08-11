@@ -1,6 +1,6 @@
 <template>
   <div class="music-three">
-    <audio ref="audioRef" crossOrigin="anonymous" :src="currentMusicInfo && currentMusicInfo.songUrl" controls></audio>
+    <audio ref="audioRef" @timeupdate="timeupdate" crossOrigin="anonymous" :src="currentMusicInfo && currentMusicInfo.songUrl" controls></audio>
   </div>
 </template>
 
@@ -8,10 +8,10 @@
 import { onMounted, watch } from 'vue';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import useAppStore from '../store/app';
+import useAppStore, { AppState } from '../store/app';
 import { storeToRefs } from 'pinia';
 
-const appStore = useAppStore();
+const appStore: AppState = useAppStore();
 const { currentMusicInfo, audioRef, isPlaying } = storeToRefs(appStore);
 
 watch(
@@ -26,6 +26,12 @@ watch(
     }
   }
 );
+
+function timeupdate(e: any) {
+  console.log(e.target!.currentTime);
+
+  appStore.currentTime = e.target!.currentTime * 1000;
+}
 
 onMounted(() => {
   const containerEl = document.querySelector('.music-three')!;

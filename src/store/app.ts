@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
 
-interface AppState {
+export interface AppState {
   appBg: string;
   musicList: any[];
   isPlaying: boolean;
   audioRef: HTMLAudioElement | null;
   currentMusicInfo: any;
   currentMusicLyric: string;
+  currentTime: number;
+  currentValue: number;
 }
 
 const useAppStore = defineStore('app', {
@@ -18,6 +20,8 @@ const useAppStore = defineStore('app', {
       isPlaying: false,
       currentMusicInfo: {},
       currentMusicLyric: '',
+      currentTime: 0,
+      currentValue: 0,
     };
   },
   actions: {},
